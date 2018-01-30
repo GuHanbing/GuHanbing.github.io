@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="模型-二分类任务Logistic regression,亦称logtic regression，翻译为“对数几率回归”，是一种分类学习方法。和先前的线性回归模型不同的是，输出的y一般是离散量的集合，如输出$y \in {0,1}$的二分类任务。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Machine Learning 学习笔记-Logistic Regression">
+<meta property="og:url" content="http://yoursite.com/2018/01/30/2018-01-30-1/index.html">
+<meta property="og:site_name" content="Messier’s blog">
+<meta property="og:description" content="模型-二分类任务Logistic regression,亦称logtic regression，翻译为“对数几率回归”，是一种分类学习方法。和先前的线性回归模型不同的是，输出的y一般是离散量的集合，如输出$y \in {0,1}$的二分类任务。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fl995wy1bgj31kw1037ce.jpg">
+<meta property="og:updated_time" content="2018-01-30T10:44:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Machine Learning 学习笔记-Logistic Regression">
+<meta name="twitter:description" content="模型-二分类任务Logistic regression,亦称logtic regression，翻译为“对数几率回归”，是一种分类学习方法。和先前的线性回归模型不同的是，输出的y一般是离散量的集合，如输出$y \in {0,1}$的二分类任务。">
+<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fl995wy1bgj31kw1037ce.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/30/2018-01-30-1/"/>
+
+
+
+
+
+  <title>Machine Learning 学习笔记-Logistic Regression | Messier’s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Messier’s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/2018-01-30-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Messier">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-eydKt8G3tww/WmwuFXp4qII/AAAAAAAAAC4/8cWzfkgl5-oI6-4i4vzHcgtPykEaEv_jQCHMYCw/I/Stan-marsh-0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Messier’s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Machine Learning 学习笔记-Logistic Regression</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T17:59:39+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning-Andrew-Ng/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning-Andrew Ng</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="模型-二分类任务"><a href="#模型-二分类任务" class="headerlink" title="模型-二分类任务"></a>模型-二分类任务</h2><p>Logistic regression,亦称logtic regression，翻译为“对数几率回归”，是一种分类学习方法。和先前的线性回归模型不同的是，输出的y一般是离散量的集合，如输出$y \in {0,1}$的二分类任务。<a id="more"></a><br>  考虑二分类任务，线性回归模型产生的$Z=\theta ^TX$是连续的实值，需要用一个函数$g(\theta ^TX)$将z转换为0/1值。<br><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fl995wy1bgj31kw1037ce.jpg" alt=""><br>  可以采用对数几率函数(Logistic Function,亦称Sigmoid Function):<br>  $$g(z)=\frac{1}{1+e^{-z}}$$<br>至此，可以确定假设方程$h<em>\theta(x)$的形式：<br>$$<br>\begin{align*}&amp; h</em>\theta (x) = g ( \theta^T x ) \newline \newline&amp; z = \theta^T x \newline&amp; g(z) = \dfrac{1}{1 + e^{-z}}\end{align*}<br>$$<br>令$y=g(z)$,可得：<br>$$ \ln \frac{y}{1-y}=\theta^T x $$<br>若将y视为样本为正例的可能性,则1-y为反例可能性。<br>上式可重写为：<br>$$\ln \frac{p(y=1 | x ; \theta)}{p(y=0 | x ; \theta)}=\theta^T x$$<br>显然有：<br>$$<br>p(y=1 | x ; \theta)=\frac{e^{\theta^T x}}{1+e^{\theta^T x}}=h<em>\theta (x)<br>\p(y=0 | x ; \theta)=\frac{1}{1+e^{\theta^T x}}=1-h</em>\theta (x)<br>$$</p>
+<p>可以由<strong>极大似然法(maximum likelihood method)</strong>来估计$\theta$,<br>最大化似然概率$L(\theta)$,即令每个样本属于其真实标记的概率越大越好：<br>$$<br>\begin{equation<em>}<br>\begin{split}<br>L(\boldsymbol{\theta}) &amp; =p(\mathbf{y}|\mathbf{X}; \boldsymbol{\theta})  \<br>&amp; =\prod<em>{i=1}^{m}p(y</em>{i}|\mathbf{x}<em>{i}; \boldsymbol{\theta}) \<br>&amp; =\prod</em>{i=1}^{m} (h<em>{\boldsymbol{\theta}}(\mathbf{x}</em>{i}))^{y<em>{i}} (1-h</em>{\boldsymbol{\theta}}(\mathbf{x}<em>{i}))^{1-y</em>{i}}<br>\end{split}<br>\end{equation</em>}<br>$$</p>
+<p>为了方便求导，对等式两边同时取对数，将$L(\theta)$转换为凸函数(convex function),可得：<br>$$<br>\begin{equation<em>}<br>\begin{split}<br>l(\boldsymbol{\theta}) &amp; =\text{log}L(\boldsymbol{\theta}) \<br>&amp; = \sum<em>{i=1}^{m} y</em>{i} \text{log} h<em>(\mathbf{x}</em>{i})+(1-y<em>{i})\text{log}(1-h</em>(\mathbf{x_i}))<br>\end{split}<br>\end{equation</em>}<br>$$<br>要使$l(\theta)$达到最大值，可以构造代价函数$J(\theta)$:<br>$$J(\theta) = - \frac{1}{m} \displaystyle \sum<em>{i=1}^m [y^{(i)}\log (h</em>\theta (x^{(i)})) + (1 - y^{(i)})\log (1 - h_\theta(x^{(i)}))]$$</p>
+<p>接下来就可以用梯度下降法求得$J(\theta)$的最小值了。<br>$$\begin{align<em>}&amp; Repeat \; \lbrace \newline &amp; \; \theta_j := \theta_j - \alpha \dfrac{\partial}{\partial \theta_j}J(\theta) \newline &amp; \rbrace\end{align</em>}$$<br>求偏导：<br>$$\begin{equation<em>}<br>\begin{split}<br>\frac{\partial }{\partial \theta<em>{j}}l(\boldsymbol{\theta}) &amp; = -\frac{1}{m}\left ( \frac{y}{g(\boldsymbol{\theta}^{T}\mathbf{x})}-\frac{1-y}{1-g(\boldsymbol{\theta}^{T}\mathbf{x})} \right) \frac{\partial }{\partial \theta</em>{j}} g(\boldsymbol{\theta}^{T}\mathbf{x})  \<br>&amp; =-\frac{1}{m}\left( \frac{y}{g(\boldsymbol{\theta}^{T}\mathbf{x})}-\frac{1-y}{1-g(\boldsymbol{\theta}^{T}\mathbf{x})} \right) g(\boldsymbol{\theta}^{T}\mathbf{x}) (1-g(\boldsymbol{\theta}^{T}\mathbf{x})) \frac{\partial }{\partial \theta<em>{j}} \boldsymbol{\theta}^{T}\mathbf{x} \<br>&amp; =-\frac{1}{m}\left( y(1-g(\boldsymbol{\theta}^{T}\mathbf{x})) -(1-y) g(\boldsymbol{\theta}^{T}\mathbf{x}) \right)x</em>{j} \<br>&amp; =-\frac{1}{m}(y-g(\boldsymbol{\theta}^{T}\mathbf{x}))x<em>{j} \<br>&amp; =\frac{1}{m}(h</em>{\boldsymbol{\theta}}(\mathbf{x})-y)x_{j} \<br>\end{split}<br>\end{equation</em>}$$<br>化简后可得：<br>$$\begin{align<em>} &amp; Repeat \; \lbrace \newline &amp; \; \theta_j := \theta<em>j - \frac{\alpha}{m} \sum</em>{i=1}^m (h_\theta(x^{(i)}) - y^{(i)}) x_j^{(i)} \newline &amp; \rbrace \end{align</em>}$$</p>
+<p>week 3的课中介绍了matlab中采用梯度下降法的优化函数：<strong>fminunc</strong><br>只要写出如下形式的代价函数后：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function [J, grad] = costFunction(theta, X, y)</span><br><span class="line">J = 0;</span><br><span class="line">grad = zeros(size(theta));</span><br><span class="line">rows=size(X,1);</span><br><span class="line">cols=size(X,2);</span><br><span class="line">hx=sigmoid(X*theta);     %rows*1的h_theta(x^i)的值</span><br><span class="line">for i=1:rows</span><br><span class="line">    J=J-1/m*(y(i)*log(hx(i))+(1-y(i))*log(1-hx(i)));</span><br><span class="line">    for j=1:cols</span><br><span class="line">    grad(j)=grad(j)+1/m*(hx(i)-y(i))*X(i,j);</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line">``` </span><br><span class="line">就可以调用该函数计算出$\theta$和J：</span><br></pre></td></tr></table></figure></p>
+<p>options = optimset(‘GradObj’, ‘on’, ‘MaxIter’, 400);</p>
+<p>%  Run fminunc to obtain the optimal theta<br>%  This function will return theta and the cost<br>[theta, cost] = …<br>    fminunc(@(t)(costFunction(t, X, y)), initial_theta, options);<br>```<br>这篇<a href="http://blog.csdn.net/gzp444280620/article/details/49272977" target="_blank" rel="noopener">博客</a>中介绍了详细用法，先mark一下。</p>
+<h2 id="多分类任务"><a href="#多分类任务" class="headerlink" title="多分类任务"></a>多分类任务</h2><p>基本解决思路是将多分类任务拆解为若干个二分类任务求解。<br>最经典的拆分策略有三种：”一对一”(OvO),“一对其余”（OvR）和多对多（MvM）。<br>在这里介绍下OvR：对于N个类别，分别训练N个分类器，每个分类器仅将一个类作为正例，其余作为反例。最后将置信度最大的分类器的结果作为预测的结果。如下：<br>$$\begin{align<em>}&amp; y \in \lbrace0, 1 … n\rbrace \newline&amp; h<em>\theta^{(0)}(x) = P(y = 0 | x ; \theta) \newline&amp; h</em>\theta^{(1)}(x) = P(y = 1 | x ; \theta) \newline&amp; \cdots \newline&amp; h_\theta^{(n)}(x) = P(y = n | x ; \theta) \newline&amp; \mathrm{prediction} = \max<em>i( h</em>\theta ^{(i)}(x) )\newline\end{align</em>}$$</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/30/2018-01-30/" rel="next" title="Machine Learning 学习笔记-线性回归">
+                <i class="fa fa-chevron-left"></i> Machine Learning 学习笔记-线性回归
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/30/2018-01-30-2/" rel="prev" title="Machine Learning 学习笔记-Neural Networks">
+                Machine Learning 学习笔记-Neural Networks <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://lh3.googleusercontent.com/-eydKt8G3tww/WmwuFXp4qII/AAAAAAAAAC4/8cWzfkgl5-oI6-4i4vzHcgtPykEaEv_jQCHMYCw/I/Stan-marsh-0.png"
+               alt="Messier" />
+          <p class="site-author-name" itemprop="name">Messier</p>
+           
+              <p class="site-description motion-element" itemprop="description">101010</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模型-二分类任务"><span class="nav-number">1.</span> <span class="nav-text">模型-二分类任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多分类任务"><span class="nav-number">2.</span> <span class="nav-text">多分类任务</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Messier</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="随笔,博客," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="前两天刚回到家，一时有些心不在焉，无心学习。这学期有次在google问题时翻到一个用hexo搭的博客，感觉视觉效果还蛮不错的，昨天就抽空按网上教程搭了个，也没碰到什么问题。现在也正准备把这学期在cnblog上写的几篇东西搬过来。转眼间也大三了。这学期在杨老师的指点下也学了挺多东西，在这里也感谢下老师吧。实验室也新来了一批学弟学妹，自己也从调车的变成教（da）调（jiang）车（you）的学长。">
-<meta name="keywords" content="随笔,博客">
 <meta property="og:type" content="article">
-<meta property="og:title" content="起点">
-<meta property="og:url" content="http://yoursite.com/2018/01/27/2018-01-27/index.html">
+<meta property="og:title" content="Machine Learning 学习笔记-线性回归">
+<meta property="og:url" content="http://yoursite.com/2018/01/30/2018-01-30/index.html">
 <meta property="og:site_name" content="Messier’s blog">
-<meta property="og:description" content="前两天刚回到家，一时有些心不在焉，无心学习。这学期有次在google问题时翻到一个用hexo搭的博客，感觉视觉效果还蛮不错的，昨天就抽空按网上教程搭了个，也没碰到什么问题。现在也正准备把这学期在cnblog上写的几篇东西搬过来。转眼间也大三了。这学期在杨老师的指点下也学了挺多东西，在这里也感谢下老师吧。实验室也新来了一批学弟学妹，自己也从调车的变成教（da）调（jiang）车（you）的学长。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-28T03:19:15.000Z">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1fl5vafqy6hj31er09975r.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcgy1fl5vap3sl2j30hy08qgmv.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1fl5vauuesvj30ft08ejs9.jpg">
+<meta property="og:updated_time" content="2018-01-30T10:44:10.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="起点">
-<meta name="twitter:description" content="前两天刚回到家，一时有些心不在焉，无心学习。这学期有次在google问题时翻到一个用hexo搭的博客，感觉视觉效果还蛮不错的，昨天就抽空按网上教程搭了个，也没碰到什么问题。现在也正准备把这学期在cnblog上写的几篇东西搬过来。转眼间也大三了。这学期在杨老师的指点下也学了挺多东西，在这里也感谢下老师吧。实验室也新来了一批学弟学妹，自己也从调车的变成教（da）调（jiang）车（you）的学长。">
+<meta name="twitter:title" content="Machine Learning 学习笔记-线性回归">
+<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1fl5vafqy6hj31er09975r.jpg">
 
 
 
@@ -134,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/01/27/2018-01-27/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/30/2018-01-30/"/>
 
 
 
 
 
-  <title>起点 | Messier’s blog</title>
+  <title>Machine Learning 学习笔记-线性回归 | Messier’s blog</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/27/2018-01-27/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/2018-01-30/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Messier">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">起点</h1>
+          <h1 class="post-title" itemprop="name headline">Machine Learning 学习笔记-线性回归</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-27T16:06:31+08:00">
-                2018-01-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T17:43:42+08:00">
+                2018-01-30
               </time>
             
 
@@ -302,6 +302,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning-Andrew-Ng/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning-Andrew Ng</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -333,8 +355,27 @@
       
 
       
-        <p>　　前两天刚回到家，一时有些心不在焉，无心学习。这学期有次在google问题时翻到一个用hexo搭的博客，感觉视觉效果还蛮不错的，昨天就抽空按网上教程搭了个，也没碰到什么问题。现在也正准备把这学期在cnblog上写的几篇东西搬过来。<br>转眼间也大三了。这学期在杨老师的指点下也学了挺多东西，在这里也感谢下老师吧。实验室也新来了一批学弟学妹，自己也从调车的变成教（da）调（jiang）车（you）的学长。虽然说下学期开始要考研，但还是有些想去调车，再参加一年比赛，现在也还没想好。开这个博客的主要目的也是为了记录下自己接下来一年多的学习历程，希望对学弟学妹们有些帮助。<br><a id="more"></a><br>　　今天是18年1月27日，窗外正下着雪。前几天在写日记的时候，在写日期的年份的时候想到一个问题：我是应该写2018还是18呢？仔细想想，多写个20好像没什么必要。就写日记这件事来说，我应该没法坚持到2100年，一本活页本也就能放下一年份的纸，由此看来，每天去重复写这个20还真的是件多余的事。<br>　　人在考虑一件事自己能坚持多久时，往往会过于乐观了，潜意识里就觉得自己好像能坚持一个世纪一样。据说最早的文字是公元前3500多年前的苏美尔人的楔形文字，那时候的文字只是简单的表意文字，只是用来表示一些日常的事物。也就是说，最早的文字只是用来记录仓库里有多少稻穗这类琐碎的事，而不是国王的丰功伟绩。时至今日，文字的形式发生了变化：意音文字和字母文字，能描绘那些人们想象中的事物。载体也发生了变化：由纸拓展到了各类非易失性存储器和云存储。（写到这里想起了《三体》当中提到“把字刻在石头上才是存储文字时间最久的方法”，突然有点想去学刻字 。<code>(*^__^*)</code>)<br>　　 将文字写在电脑上，一般还会有自动的时间记录，真的给人一种自己的文字好像会流传万古千秋的错觉。我自己以前也一直用APP记日记，不过后来回看时，往往都会删掉以前的记录，感觉以前的自己真的好幼稚，都不忍卒读了。另外一方面，我这个人也比较落后，不用朋友圈、说说什么的，年纪渐长后，才明白，文字放到网络上往往就变了味，不知是用来记录还是用来和他人分享，为了取得共鸣而往往将一些微小的事放大，这也无可厚非。其实也没什么不好，这才是常态吧。前段时间看着室友在寝室复习的时候，每换一首歌，都挪下去把评论刷一遍，难怪考不好了。也想起了以前自己也是这样刷评论的。<code>^_^</code>人类也真的是蛮可爱的，从一首歌中也能找到共鸣啊。<br>　　 至于写博客这个事情，相对来说还算自由，我愿意的话，可以不告诉任何人这个博客的网址，也不用看别人有没有给我点赞或是评论，当然也随时可以删除，完全可以当作一个单机游戏来玩。写这类随笔也像写日记一样，想到哪写到哪，有时不太会讲究逻辑。不过在写一些学习笔记时还是会注意下的。至于能坚持多久，虽然坚持不到22世纪，但至少可以坚持一年，毕竟买的域名还是不能浪费啊。<code>^_^</code><br>　　 现在离考研的初试还有11个月不到的时间，希望自己能踏踏实实地走好每一天的路吧。
-　　</p>
+        <p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fl5vafqy6hj31er09975r.jpg" alt=""><br><a id="more"></a></p>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><p>  假定有i组输入输出数据。输入变量可以用$x^i$表示，输出变量可以用$y^i$表示，一对${x^i,y^i}$名为<strong>训练样本(training example)</strong>，它们的集合则名为<strong>训练集(training set)</strong>。<br>  假定$X$有j个特征，则可以用集合${x^i_1,x^i_2,\dots ,x^i<em>j}$表示。<br>为了描述模型，要建立<strong>假设方程(hypothesis function)</strong> :<br>$ h:X\to Y$。<br>$h</em>\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \theta_3 x_3 + \cdots + \theta_n x<em>n$<br>也可以写成矩阵形式：<br>$\begin{align*}h</em>\theta(x) =\begin{bmatrix}\theta_0 \hspace{2em} \theta_1 \hspace{2em} … \hspace{2em} \theta_n\end{bmatrix}\begin{bmatrix}x_0 \newline x_1 \newline \vdots \newline x_n\end{bmatrix}= \theta^T x\end{align<em>}$<br>(备注：一般一维向量都写成列向量)<br>评价假设方程的准确性，可以用<em>*代价函数(cost function)</em></em>。</p>
+<h2 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h2><p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1fl5vap3sl2j30hy08qgmv.jpg" alt=""><br>代价函数可以表示为遍历每个样本，求预测值和实际值的残差平方和的均值。<br>$J(\theta) = \dfrac {1}{2m} \displaystyle \sum <em>{i=1}^m \left ( \hat{y}</em>{i}- y<em>{i} \right)^2 = \dfrac {1}{2m} \displaystyle \sum </em>{i=1}^m \left (h<em>\theta (x</em>{i}) - y_{i} \right)^2$</p>
+<p>显然，代价函数值越小，假设方程越准确。<br>由此可引入两种方法-<strong>梯度下降(Gradient Descent)</strong>和<strong>正规方程(Normal Equation)</strong>来调整参数$\theta$使$J$的值最小。</p>
+<h2 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h2><p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fl5vauuesvj30ft08ejs9.jpg" alt=""></p>
+<blockquote>
+<p>The gradient descent algorithm is:</p>
+<p>repeat until convergence:</p>
+<p>$\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta)$</p>
+</blockquote>
+<p>求偏导(舍去m)：<br>$$\begin{equation<em>}<br>\begin{split}<br> \frac{\partial}{\partial \theta_j} J(\theta) &amp; = \frac{\partial}{\partial \theta<em>j}\frac{1}{2m}( h</em>\theta(\boldsymbol{x})-y)^2 \<br>&amp;  =2\cdot\frac{1}{2m}\cdot( h_\theta(\boldsymbol{x})-y)\cdot\frac{\partial}{\partial \theta<em>j}( h</em>\theta(\boldsymbol{x})-y) \<br>&amp;  = \frac{1}{m}(h_\theta(\boldsymbol{x})-y)\cdot \frac{\partial}{\partial \theta<em>j}(\sum</em>{i=0}^{n}\theta_i x<em>i-y) \<br>&amp;  =\frac{1}{m} (h</em>\theta(\boldsymbol{x})-y)x_j \<br>\end{split}<br>\end{equation</em>}$$<br>$\alpha$为<strong>学习速率(learning rate)</strong>,对应上图的步长。<br>对于一条样本，可得：<br>$\theta_j := \theta<em>j -  \alpha \frac{1}{m} (h</em>\theta(x^i)-y^i)x_{j}^{i}$</p>
+<blockquote>
+<p>这就是有名的LMS更新原则，也叫Widrow-Hoff学习准则，参数 θ 更新的幅度取决于误差项的大小。从一对样本的情况，我们推导出参数θ<br>如何更新使得函数可以收敛。事实上，对于含有多个训练样本的情况，有两个方法可以对参数θ 进行更新，一个是 batch model， 另外一个是stochastic model。</p>
+</blockquote>
+<p>(PS:这篇<a href="http://blog.csdn.net/matrix_space/article/details/44516765" target="_blank" rel="noopener">博客</a>介绍的很详细，但最后两个公式的正负号错了。)</p>
+<h3 id="batch-mode"><a href="#batch-mode" class="headerlink" title="batch mode:"></a>batch mode:</h3><p>每次更新都遍历所有样本<br>$$<br>\begin{align<em>} &amp; \text{repeat until convergence:} \; \lbrace \newline \; &amp; \theta_0 := \theta<em>0 - \alpha \frac{1}{m} \sum\limits</em>{i=1}^{m} (h_\theta(x^{(i)}) - y^{(i)}) \cdot x_0^{(i)}\newline \; &amp; \theta_1 := \theta<em>1 - \alpha \frac{1}{m} \sum\limits</em>{i=1}^{m} (h_\theta(x^{(i)}) - y^{(i)}) \cdot x_1^{(i)} \newline \; &amp; \theta_2 := \theta<em>2 - \alpha \frac{1}{m} \sum\limits</em>{i=1}^{m} (h_\theta(x^{(i)}) - y^{(i)}) \cdot x_2^{(i)} \newline &amp; \cdots \newline \rbrace \end{align</em>}<br>$$</p>
+<h3 id="特征缩放-Feature-Scaling"><a href="#特征缩放-Feature-Scaling" class="headerlink" title="特征缩放(Feature Scaling)"></a>特征缩放(Feature Scaling)</h3><p>在使用梯度下降算法前，最好对每个特征进行归一化操作。<br>归一化公式：<br>$$x_j := \dfrac{x_j - \mu_j}{s_j}$$<br>$\mu_j-样本均值$<br>$s_j -样本方差$</p>
+<h2 id="正规方程"><a href="#正规方程" class="headerlink" title="正规方程"></a>正规方程</h2><h3 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h3><p><a href="http://blog.csdn.net/matrix_space/article/details/44516765" target="_blank" rel="noopener">推导过程</a><br>$\theta = (X^T X)^{-1}X^T y$</p>
+<h3 id="与梯度下降的对比"><a href="#与梯度下降的对比" class="headerlink" title="与梯度下降的对比"></a>与梯度下降的对比</h3><table><br>   <tr><br>      <td>Gradient Descent</td><br>      <td>Normal Equation</td><br>   </tr><br>   <tr><br>      <td>Need to choose alpha</td><br>      <td>No need to choose alpha</td><br>   </tr><br>   <tr><br>      <td>Needs many iterations</td><br>      <td>No need to iterate</td><br>   </tr><br>   <tr><br>      <td>O (kn2)</td><br>      <td>O (n3), need to calculate inverse of XTX</td><br>   </tr><br>   <tr><br>      <td>Works well when n is large</td><br>      <td>Slow if n is very large</td><br>   </tr><br></table>
+
+
 
       
     </div>
@@ -350,14 +391,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/随笔/" rel="tag"># 随笔</a>
-          
-            <a href="/tags/博客/" rel="tag"># 博客</a>
-          
-        </div>
-      
 
       
       
@@ -367,14 +400,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/01/28/2018-01-28/" rel="next" title="《城堡》-卡夫卡 读后感">
+                <i class="fa fa-chevron-left"></i> 《城堡》-卡夫卡 读后感
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/01/28/2018-01-28/" rel="prev" title="《城堡》-卡夫卡 读后感">
-                《城堡》-卡夫卡 读后感 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/01/30/2018-01-30-1/" rel="prev" title="Machine Learning 学习笔记-Logistic Regression">
+                Machine Learning 学习笔记-Logistic Regression <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -423,8 +460,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://lh3.googleusercontent.com/-eydKt8G3tww/WmwuFXp4qII/AAAAAAAAAC4/8cWzfkgl5-oI6-4i4vzHcgtPykEaEv_jQCHMYCw/I/Stan-marsh-0.png"
@@ -486,6 +532,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模型"><span class="nav-number">1.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代价函数"><span class="nav-number">2.</span> <span class="nav-text">代价函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#梯度下降"><span class="nav-number">3.</span> <span class="nav-text">梯度下降</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#batch-mode"><span class="nav-number">3.1.</span> <span class="nav-text">batch mode:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特征缩放-Feature-Scaling"><span class="nav-number">3.2.</span> <span class="nav-text">特征缩放(Feature Scaling)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正规方程"><span class="nav-number">4.</span> <span class="nav-text">正规方程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#公式"><span class="nav-number">4.1.</span> <span class="nav-text">公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#与梯度下降的对比"><span class="nav-number">4.2.</span> <span class="nav-text">与梯度下降的对比</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
