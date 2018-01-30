@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="caffe,opencv," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="最近由于项目需要用到caffe，学习了下caffe的用法，在使用过程中也是遇到了些问题，通过上网搜索和问老师的方法解决了，在此记录下过程，方便以后查看，也希望能为和我一样的新手们提供帮助。顺带附上老师写的教程">
+<meta name="keywords" content="caffe,opencv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="caffe+opencv3.3dnn模块 完成手写数字图片识别">
+<meta property="og:url" content="http://yoursite.com/2018/01/30/2018-01-30-3/index.html">
+<meta property="og:site_name" content="Messier’s blog">
+<meta property="og:description" content="最近由于项目需要用到caffe，学习了下caffe的用法，在使用过程中也是遇到了些问题，通过上网搜索和问老师的方法解决了，在此记录下过程，方便以后查看，也希望能为和我一样的新手们提供帮助。顺带附上老师写的教程">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2017-12-07-020026.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2017-12-07-022803.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2017-12-07-022738.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2017-12-07-021354.png">
+<meta property="og:updated_time" content="2018-01-30T10:08:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="caffe+opencv3.3dnn模块 完成手写数字图片识别">
+<meta name="twitter:description" content="最近由于项目需要用到caffe，学习了下caffe的用法，在使用过程中也是遇到了些问题，通过上网搜索和问老师的方法解决了，在此记录下过程，方便以后查看，也希望能为和我一样的新手们提供帮助。顺带附上老师写的教程">
+<meta name="twitter:image" content="https://blog-1255455112.cossh.myqcloud.com/2017-12-07-020026.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/30/2018-01-30-3/"/>
+
+
+
+
+
+  <title>caffe+opencv3.3dnn模块 完成手写数字图片识别 | Messier’s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Messier’s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/2018-01-30-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Messier">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-eydKt8G3tww/WmwuFXp4qII/AAAAAAAAAC4/8cWzfkgl5-oI6-4i4vzHcgtPykEaEv_jQCHMYCw/I/Stan-marsh-0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Messier’s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">caffe+opencv3.3dnn模块 完成手写数字图片识别</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T18:05:20+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近由于项目需要用到caffe，学习了下caffe的用法，在使用过程中也是遇到了些问题，通过上网搜索和问老师的方法解决了，在此记录下过程，方便以后查看，也希望能为和我一样的新手们提供帮助。<br>顺带附上老师写的<a href="https://github.com/ai4c/doc/blob/master/dnn/caffe%E8%AE%AD%E7%BB%83%E6%AD%A5%E9%AA%A4.md" target="_blank" rel="noopener">教程</a></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><h2 id="安装Caffe并运行Mnist例程"><a href="#安装Caffe并运行Mnist例程" class="headerlink" title="安装Caffe并运行Mnist例程"></a>安装Caffe并运行Mnist例程</h2><p>我主要参考了这篇教程：<a href="http://blog.csdn.net/lkj345/article/details/51260811" target="_blank" rel="noopener"> Mac极简安装Caffe并训练MNIST</a>。然后进行了examples文件夹里的Mnist的训练，期间并没有碰到什么问题。</p>
+<h2 id="将图片转换为LMDB文件"><a href="#将图片转换为LMDB文件" class="headerlink" title="将图片转换为LMDB文件"></a>将图片转换为LMDB文件</h2><p>Mnist中已经给出了现成的LMDB数据文件，在实际项目中，需要我们将图片文件转换为LMDB文件。可以参考下examples里的imagenet，里面的readme写了完整的过程，也可以参考上面贴的教程。在这里就不复述了，主要说下注意点：<br>转换文件只要参考imagenet的create_imagenet.sh并更改相应路径即可，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">set -e</span><br><span class="line">#生成的lmdb文件夹位置</span><br><span class="line">EXAMPLE=examples/myMnistTest</span><br><span class="line">#train.txt和val.txt位置</span><br><span class="line">DATA=examples/myMnistTest/MNIST_Dataset</span><br><span class="line">#tools文件夹位置,写相对位置的话要在caffe根目录运行</span><br><span class="line">TOOLS=build/tools</span><br><span class="line">#train图片位置</span><br><span class="line">TRAIN_DATA_ROOT=/Users/messier/caffe/examples/myMnistTest/MNIST_Dataset/train_images/</span><br><span class="line">#val图片位置</span><br><span class="line">VAL_DATA_ROOT=/Users/messier/caffe/examples/myMnistTest/MNIST_Dataset/train_images/</span><br><span class="line"></span><br><span class="line"># Set RESIZE=true to resize the images to 256x256. Leave as false if images have</span><br><span class="line"># already been resized using another tool.</span><br><span class="line">#这边写成false，我写了true结果生成了10个多GB的lmdb...不过训练出来的模型还是能用的</span><br><span class="line">RESIZE=true</span><br><span class="line">if $RESIZE; then</span><br><span class="line">  RESIZE_HEIGHT=256</span><br><span class="line">  RESIZE_WIDTH=256</span><br><span class="line">else</span><br><span class="line">  RESIZE_HEIGHT=0</span><br><span class="line">  RESIZE_WIDTH=0</span><br></pre></td></tr></table></figure>
+<h2 id="开始训练"><a href="#开始训练" class="headerlink" title="开始训练"></a>开始训练</h2><p>这一步之前可以选择进行计算图像均值的操作。然后去mnist文件夹中把之前用到过的prototxt拿过来，更改路径，按之前的操作进行即可。<br>要注意的是，没进行过均值操作的话，要把所有的mean_pixel注释掉。<br><img src="https://blog-1255455112.cossh.myqcloud.com/2017-12-07-020026.png" alt=""></p>
+<h2 id="在opencv中调用训练好的模型"><a href="#在opencv中调用训练好的模型" class="headerlink" title="在opencv中调用训练好的模型"></a>在opencv中调用训练好的模型</h2><p>opencv3.3中将dnn模块从contrib中提到了主仓库中，可以直接调用caffe训练好的模型，且不需要任意依赖。<br>这里我主要参考了opencv中一个用caffe模型识别航空飞机的<a href="https://docs.opencv.org/master/d5/de7/tutorial_dnn_googlenet.html" target="_blank" rel="noopener">sample</a>。<br>稍加修改即可。<br>首先要把几个文件的路径改下，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String modelTxt = &quot;lenet_deploy.prototxt&quot;;</span><br><span class="line">String modelBin = &quot;_iter_6714.caffemodel&quot;;</span><br><span class="line">String imageFile = (argc &gt; 1) ? argv[1] : &quot;3_00715.jpg&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>需要注意的是，当时训练用的模型文件不能在这里直接用了，要把输入和输出改下，如下：</p>
+<ol>
+<li>更改输入<br>原来：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">name: &quot;LeNet&quot;</span><br><span class="line">layer &#123;</span><br><span class="line">  name: &quot;mnist&quot;</span><br><span class="line">  type: &quot;Data&quot;</span><br><span class="line">  top: &quot;data&quot;</span><br><span class="line">  top: &quot;label&quot;</span><br><span class="line">  include &#123;</span><br><span class="line">    phase: TRAIN</span><br><span class="line">  &#125;</span><br><span class="line">  transform_param &#123;</span><br><span class="line">    scale: 0.00390625</span><br><span class="line">  &#125;</span><br><span class="line">  data_param &#123;</span><br><span class="line">    source: &quot;./train_lmdb&quot;</span><br><span class="line">    batch_size: 64</span><br><span class="line">    backend: LMDB</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>更改为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">name: &quot;LeNet&quot;</span><br><span class="line">input: &quot;data&quot;</span><br><span class="line">input_dim: 1    #每次输入图片数</span><br><span class="line">input_dim: 1    #channels</span><br><span class="line">input_dim: 256  #width</span><br><span class="line">input_dim: 256  #height</span><br></pre></td></tr></table></figure>
+<p>2.更改输出：<br>原来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">layer &#123;</span><br><span class="line">  name: &quot;loss&quot;</span><br><span class="line">  type: &quot;SoftmaxWithLoss&quot;</span><br><span class="line">  bottom: &quot;ip2&quot;</span><br><span class="line">  bottom: &quot;label&quot;</span><br><span class="line">  top: &quot;loss&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>更改为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">layer &#123;</span><br><span class="line">name: &quot;prob&quot;</span><br><span class="line">type: &quot;Softmax&quot;</span><br><span class="line">bottom: &quot;ip2&quot;</span><br><span class="line">top: &quot;prob&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这里推荐下老师告诉我的caffe网络可视化工具<a href="http://ethereon.github.io/netscope/#/editor" target="_blank" rel="noopener">Netscope</a><br>看下更改前后的网络：<br><img src="https://blog-1255455112.cossh.myqcloud.com/2017-12-07-022803.png" alt="更改前"><br><img src="https://blog-1255455112.cossh.myqcloud.com/2017-12-07-022738.png" alt="更改后"></p>
+<p>最后程序运行结果如下：<br><img src="https://blog-1255455112.cossh.myqcloud.com/2017-12-07-021354.png" alt=""></p>
+<hr>
+<p>12.12更新：程序<a href="https://github.com/GuHanbing/Hello-Caffe" target="_blank" rel="noopener">源码</a>已经上传了，直接用cmake构建工程即可。</p>
+<p>顺带再略微解析下程序的流程：<br>1、 载入模型文件<br><code>readNetFromCaffe(modelTxt, modelBin);</code><br>2、 读取图片，转换为blob的数据格式。<br><code>Mat inputBlob = blobFromImage(img, 0.00390625f, Size(256, 256),
+                                  Scalar(), false);   //Convert Mat to batch of images</code><br>看下这个函数，第一个参数是图片，第二个参数是训练时的特征缩放系数，这里是1/256，第三个参数是<strong>blob</strong>对应的图片大小，之前说过，我在训练时误把图像缩放到了256<em> 256，这里输入图像大小还是28 </em> 28的，但作为输入要缩放到256*256，第四个参数是各通道均值，我没作均值处理所以给默认值，第六个参数的意思是是否交换R B通道，这里是单通道图片所以不交换。<br>3、 前向传播，计算各个label的prob，结果用一个10维向量保存。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Mat prob;</span><br><span class="line">    cv::TickMeter t;</span><br><span class="line">    for (int i = 0; i &lt; 10; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        CV_TRACE_REGION(&quot;forward&quot;);</span><br><span class="line">        net.setInput(inputBlob, &quot;data&quot;);        //set the network input</span><br><span class="line">        t.start();</span><br><span class="line">        prob = net.forward(&quot;prob&quot;);                          //compute output</span><br><span class="line">        t.stop();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>4、 找出prob最大的label，输出结果。</p>
+<p><code>getMaxClass(prob, &amp;classId, &amp;classProb);</code></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/caffe/" rel="tag"># caffe</a>
+          
+            <a href="/tags/opencv/" rel="tag"># opencv</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/28/2018-01-28/" rel="next" title="《城堡》-卡夫卡 读后感">
+                <i class="fa fa-chevron-left"></i> 《城堡》-卡夫卡 读后感
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://lh3.googleusercontent.com/-eydKt8G3tww/WmwuFXp4qII/AAAAAAAAAC4/8cWzfkgl5-oI6-4i4vzHcgtPykEaEv_jQCHMYCw/I/Stan-marsh-0.png"
+               alt="Messier" />
+          <p class="site-author-name" itemprop="name">Messier</p>
+           
+              <p class="site-description motion-element" itemprop="description">101010</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Caffe并运行Mnist例程"><span class="nav-number">2.</span> <span class="nav-text">安装Caffe并运行Mnist例程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将图片转换为LMDB文件"><span class="nav-number">3.</span> <span class="nav-text">将图片转换为LMDB文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始训练"><span class="nav-number">4.</span> <span class="nav-text">开始训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在opencv中调用训练好的模型"><span class="nav-number">5.</span> <span class="nav-text">在opencv中调用训练好的模型</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Messier</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
