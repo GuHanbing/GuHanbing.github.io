@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="cmake," />
 
 
 
@@ -94,17 +94,20 @@
 
 
 
-<meta name="description" content="Ins 	摄影   	图片来自instagram，正在加载中…     (function() {     var loadScript = function(path) {       var $script = document.createElement(&apos;script&apos;)       document.getElementsByTagName(&apos;body&apos;)[0].appendChi">
-<meta property="og:type" content="website">
-<meta property="og:title" content="相册">
-<meta property="og:url" content="http://yoursite.com/photos/index.html">
+<meta name="description" content="之前几天搜集了点资料，今天下午开始尝试了下opengl，在此记录下遇到的问题。">
+<meta name="keywords" content="cmake">
+<meta property="og:type" content="article">
+<meta property="og:title" content="opengl学习笔记（1）建立窗口">
+<meta property="og:url" content="http://yoursite.com/2018/02/03/2018-02-03/index.html">
 <meta property="og:site_name" content="Messier’s blog">
-<meta property="og:description" content="Ins 	摄影   	图片来自instagram，正在加载中…     (function() {     var loadScript = function(path) {       var $script = document.createElement(&apos;script&apos;)       document.getElementsByTagName(&apos;body&apos;)[0].appendChi">
+<meta property="og:description" content="之前几天搜集了点资料，今天下午开始尝试了下opengl，在此记录下遇到的问题。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-07-28T03:51:08.000Z">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-Fm2obb9rcn4/WnW67EFlj-I/AAAAAAAAAFY/LuPWFqVpz0wGN-ibrs4u3OC8GoebfncgACHMYCw/I/15176650021503.jpg">
+<meta property="og:updated_time" content="2018-02-03T13:38:30.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="相册">
-<meta name="twitter:description" content="Ins 	摄影   	图片来自instagram，正在加载中…     (function() {     var loadScript = function(path) {       var $script = document.createElement(&apos;script&apos;)       document.getElementsByTagName(&apos;body&apos;)[0].appendChi">
+<meta name="twitter:title" content="opengl学习笔记（1）建立窗口">
+<meta name="twitter:description" content="之前几天搜集了点资料，今天下午开始尝试了下opengl，在此记录下遇到的问题。">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/-Fm2obb9rcn4/WnW67EFlj-I/AAAAAAAAAFY/LuPWFqVpz0wGN-ibrs4u3OC8GoebfncgACHMYCw/I/15176650021503.jpg">
 
 
 
@@ -133,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/photos/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/02/03/2018-02-03/"/>
 
 
 
 
 
-  <title>相册 | Messier’s blog</title>
+  <title>opengl学习笔记（1）建立窗口 | Messier’s blog</title>
   
 
 
@@ -262,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/photos/index.html">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/03/2018-02-03/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Messier">
@@ -279,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">相册</h1>
+          <h1 class="post-title" itemprop="name headline">opengl学习笔记（1）建立窗口</h1>
         
 
         <div class="post-meta">
@@ -291,8 +294,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-25T18:06:44+08:00">
-                2018-01-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-03T20:43:51+08:00">
+                2018-02-03
               </time>
             
 
@@ -301,6 +304,39 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程/opengl/" itemprop="url" rel="index">
+                    <span itemprop="name">opengl</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -332,26 +368,27 @@
       
 
       
-        <link rel="stylesheet" href="./ins.css">
-<div class="photos-btn-wrap">
-	<a class="photos-btn active" href="javascript:void(0)" target="_blank" rel="noopener">Ins</a>
-	<a class="photos-btn" target="_blank" href="http://litten.me/gallery/">摄影</a>
-</div>
-<div class="instagram itemscope">
-	<a href="https://www.instagram.com/litten225/" target="_blank" class="open-ins">图片来自instagram，正在加载中…</a>
-</div>
-<script>
-  (function() {
-    var loadScript = function(path) {
-      var $script = document.createElement('script')
-      document.getElementsByTagName('body')[0].appendChild($script)
-      $script.setAttribute('src', path)
-    }
-    setTimeout(function() {
-      loadScript('./ins.js')
-    }, 0)
-  })()
-</script>
+        <p>之前几天搜集了点资料，今天下午开始尝试了下opengl，在此记录下遇到的问题。<a id="more"></a></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://www.opengl-tutorial.org/cn/beginners-tutorials/tutorial-1-opening-a-window/" target="_blank" rel="noopener">opengl-tutorial</a> 很不错的中文教程，还有配套的cmake构建的工程文件，但不太详细。</li>
+<li><p><a href="https://learnopengl.com/Getting-started/Hello-Window" target="_blank" rel="noopener">Learn Opengl</a> 比上面的详细的多，重要的函数都作了解释。英文教程。</p>
+</li>
+<li><p><a href="https://doc.yonyoucloud.com/doc/wiki/project/modern-opengl-tutorial/tutorial1.html" target="_blank" rel="noopener">modern opengl tutorial</a> 还没看，以后有不懂的再参考，不太建议按这里面用glut实现窗口，一般现在都用glfw代替。</p>
+</li>
+</ul>
+<h2 id="安装和使用"><a href="#安装和使用" class="headerlink" title="安装和使用"></a>安装和使用</h2><p>我在OS X下直接用brew安装了opengl、glfw、glew。<br>glad下载参照了教程2：</p>
+<blockquote>
+<p>Setting up GLAD<br>GLAD is an open source library that manages all that cumbersome work we talked about. GLAD has a slightly different configuration setup than most common open source libraries. GLAD uses a web service where we can tell GLAD for which version of OpenGL we’d like to define and load all relevant OpenGL functions according to that version.</p>
+<p>Go to the web service, make sure the language is set to C++ and in the API section, select an OpenGL version of at least 3.3 (which is what we’ll be using for these tutorials; higher versions are fine as well). Also make sure the profile is set to Core and that the Generate a loader option is ticked. Ignore the extensions (for now) and click Generate to produce the resulting library files.</p>
+<p>GLAD by now should have provided you a zip file containing two include folders, and a single glad.c file. Copy both include folders (glad and KHR) into your include(s) directoy (or add an extra item pointing to these folders), and add the glad.c file to your project.</p>
+<p>After the previous steps, you should be able to add the following include directive above your file:</p>
+<p><code>#include &lt;glad/glad.h&gt;</code></p>
+</blockquote>
+<p>本次用到了glfw3和glad，我还是比较习惯用cmake建工程。<br>先是添加opengl：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cmake_minimum_required(VERSION 2.8)</span><br><span class="line"></span><br><span class="line">project(testas)</span><br><span class="line">add_executable(testas main.cpp glad.c)</span><br><span class="line">find_package(OpenGL REQUIRED)</span><br><span class="line">find_package(GLUT REQUIRED)</span><br><span class="line">include_directories( $&#123;OPENGL_INCLUDE_DIRS&#125;  $&#123;GLUT_INCLUDE_DIRS&#125; )</span><br><span class="line"></span><br><span class="line">target_link_libraries(testas $&#123;OPENGL_LIBRARIES&#125;  )</span><br></pre></td></tr></table></figure>
+<p>然后添加glfw，参考<a href="http://www.glfw.org/docs/latest/build_guide.html#build_link_cmake_package" target="_blank" rel="noopener">官方说明</a>：<br>（一开始本来想像教程1那样把glfw源码放在工程文件中，方便以后发布和移植，于是下载了glfw3.2.1，编译成功，但运行时有错误警告，上Stack Overflow看到有人说是osx里面还没修复的bug，于是还是老老实实的用brew安装的glfw）<br>头文件直接<code>#include &lt;GLFW/glfw3.h&gt;</code>就好了，因为brew在<code>/usr/local/include</code>建了快捷方式。然后在CMakeLists添加链接：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">link_directories(&quot;/usr/local/Cellar/glfw/3.2.1/lib&quot;)</span><br><span class="line"></span><br><span class="line">target_link_libraries(testas  glfw)</span><br></pre></td></tr></table></figure>
+<p>接下来建工程的时候，直接生成可执行文件没问题，生成Xcode工程又报错<code>ヽ(｀⌒´)ﾉ</code>，直接在调用dlib和g2o的时候用xcode就老是莫名其妙出问题，好像和cmake不太兼容。然后去下了下clion，果然好用多了，改了cmakelists也不用重新在终端里生成工程了，很方便。然后也没xcode的那些问题，就运行成功了。<br><img src="https://lh3.googleusercontent.com/-Fm2obb9rcn4/WnW67EFlj-I/AAAAAAAAAFY/LuPWFqVpz0wGN-ibrs4u3OC8GoebfncgACHMYCw/I/15176650021503.jpg" alt=""></p>
 
       
     </div>
@@ -367,11 +404,33 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/cmake/" rel="tag"># cmake</a>
+          
+        </div>
+      
 
       
       
       
 
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/02/2018-02-02/" rel="next" title="《罗拉快跑》观后感">
+                <i class="fa fa-chevron-left"></i> 《罗拉快跑》观后感
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
 
       
@@ -416,8 +475,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://lh3.googleusercontent.com/-eydKt8G3tww/WmwuFXp4qII/AAAAAAAAAC4/8cWzfkgl5-oI6-4i4vzHcgtPykEaEv_jQCHMYCw/I/Stan-marsh-0.png"
@@ -479,6 +547,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">1.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装和使用"><span class="nav-number">2.</span> <span class="nav-text">安装和使用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
