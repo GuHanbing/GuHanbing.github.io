@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="opengl中画东西的过程一般如下：  The graphics pipeline can be divided into two large parts: the first transforms your 3D coordinates into 2D coordinates and the second part transforms the 2D coordinates into actua">
+<meta property="og:type" content="article">
+<meta property="og:title" content="opengl学习笔记（2）画一个三角形">
+<meta property="og:url" content="http://yoursite.com/2018/02/05/2018-02-05/index.html">
+<meta property="og:site_name" content="Messier’s blog">
+<meta property="og:description" content="opengl中画东西的过程一般如下：  The graphics pipeline can be divided into two large parts: the first transforms your 3D coordinates into 2D coordinates and the second part transforms the 2D coordinates into actua">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-02-16-103939.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-6S4ynRgzUfA/Wnhtpf6F5BI/AAAAAAAAAGM/MEvOAO_--oY-As4s537woz_--m7fDqjxQCHMYCw/I/15178418258118.jpg">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-02-16-103958.jpg">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-02-16-104026.jpg">
+<meta property="og:updated_time" content="2018-02-16T10:40:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="opengl学习笔记（2）画一个三角形">
+<meta name="twitter:description" content="opengl中画东西的过程一般如下：  The graphics pipeline can be divided into two large parts: the first transforms your 3D coordinates into 2D coordinates and the second part transforms the 2D coordinates into actua">
+<meta name="twitter:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-02-16-103939.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/05/2018-02-05/"/>
+
+
+
+
+
+  <title>opengl学习笔记（2）画一个三角形 | Messier’s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Messier’s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/05/2018-02-05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Messier">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://lh3.googleusercontent.com/-eydKt8G3tww/WmwuFXp4qII/AAAAAAAAAC4/8cWzfkgl5-oI6-4i4vzHcgtPykEaEv_jQCHMYCw/I/Stan-marsh-0.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Messier’s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">opengl学习笔记（2）画一个三角形</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-05T21:56:25+08:00">
+                2018-02-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程/opengl/" itemprop="url" rel="index">
+                    <span itemprop="name">opengl</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>opengl中画东西的过程一般如下：</p>
+<blockquote>
+<p>The graphics pipeline can be divided into two large parts: the first transforms your 3D coordinates into 2D coordinates and the second part transforms the 2D coordinates into actual colored pixels. </p>
+</blockquote>
+<p> 暂且先不管着色器的细节,来看下opengl怎么用VAO,VBO,VEO描述三维的形体。<a id="more"></a></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://www.opengl-tutorial.org/cn/beginners-tutorials/tutorial-1-opening-a-window/" target="_blank" rel="noopener">opengl-tutorial</a> 很不错的中文教程，还有配套的cmake构建的工程文件，但不太详细。</li>
+<li><a href="https://learnopengl.com/Getting-started/Hello-Window" target="_blank" rel="noopener">Learn Opengl</a> 比上面的详细的多，重要的函数都作了解释。英文教程。</li>
+</ul>
+<h2 id="坐标系和投影"><a href="#坐标系和投影" class="headerlink" title="坐标系和投影"></a>坐标系和投影</h2><p>opengl的物体是在三维空间中的，x向右，y向上，z向屏幕外，投影到二维屏幕平面如下：<br><img src="https://blog-1255455112.cossh.myqcloud.com/2018-02-16-103939.jpg" alt=""><br>可以通过<code>glViewport</code>函数调整该矩形在像素坐标系的位置。<br>如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">C Specification</span><br><span class="line">void glViewport(	GLint x,</span><br><span class="line"> 	GLint y,</span><br><span class="line"> 	GLsizei width,</span><br><span class="line"> 	GLsizei height);</span><br><span class="line"> </span><br><span class="line">Parameters</span><br><span class="line">x, y</span><br><span class="line">Specify the lower left corner of the viewport rectangle, in pixels. The initial value is (0,0).</span><br><span class="line"></span><br><span class="line">width, height</span><br><span class="line">Specify the width and height of the viewport. When a GL context is first attached to a window, width and height are set to the dimensions of that window.</span><br></pre></td></tr></table></figure>
+<p>注意这里是调整左下角的<br>像素坐标和矩形像素宽高，这里像素坐标是x向右，y向上，和opencv不太一样。</p>
+<h2 id="VBO对象-vertex-buffer-objects"><a href="#VBO对象-vertex-buffer-objects" class="headerlink" title="VBO对象-vertex buffer objects"></a>VBO对象-vertex buffer objects</h2><p>画一个三角形要三个点，九个坐标，可以用一个float数组表示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">float vertices[] = &#123;</span><br><span class="line">    -0.5f, -0.5f, 0.0f,</span><br><span class="line">     0.5f, -0.5f, 0.0f,</span><br><span class="line">     0.0f,  0.5f, 0.0f</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>opengl用C语言去实现了对象，c语言中没法把函数放结构体里面，opengl就采用了id号这个方法把数据和函数绑定在一起，很巧妙，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//创建一个VBO对象(可以用数组同时创建多个)</span><br><span class="line">unsigned int VBO;</span><br><span class="line">glGenBuffers(1, &amp;VBO); //VBOS=1,2,3...</span><br></pre></td></tr></table></figure>
+<p>然后就是把数组存入了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//把当前对象id切换到刚申请的那个，初始应该是id=0的空对象</span><br><span class="line">glBindBuffer(GL_ARRAY_BUFFER, VBO);  </span><br><span class="line">glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);</span><br></pre></td></tr></table></figure>
+<p><img src="https://lh3.googleusercontent.com/-6S4ynRgzUfA/Wnhtpf6F5BI/AAAAAAAAAGM/MEvOAO_--oY-As4s537woz_--m7fDqjxQCHMYCw/I/15178418258118.jpg" alt=""></p>
+<h2 id="着色器"><a href="#着色器" class="headerlink" title="着色器"></a>着色器</h2><p>pass</p>
+<h2 id="VAO对象-Vertex-Array-Object"><a href="#VAO对象-Vertex-Array-Object" class="headerlink" title="VAO对象-Vertex Array Object"></a>VAO对象-Vertex Array Object</h2><p>之前的VBO对象存储了点的位置数据。这时就要用VAO对象告诉opengl应该以什么样的顺序读取这些点来画图。如下：<br><img src="https://blog-1255455112.cossh.myqcloud.com/2018-02-16-103958.jpg" alt=""><br>代码入下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">unsigned int VAO;</span><br><span class="line">glGenVertexArrays(1, &amp;VAO);  </span><br><span class="line">// ..:: Initialization code (done once (unless your object frequently changes)) :: ..</span><br><span class="line">// 1. bind Vertex Array Object</span><br><span class="line">glBindVertexArray(VAO);</span><br><span class="line">// 2. copy our vertices array in a buffer for OpenGL to use</span><br><span class="line">glBindBuffer(GL_ARRAY_BUFFER, VBO);</span><br><span class="line">glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);</span><br><span class="line">// 3. then set our vertex attributes pointers</span><br><span class="line">glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);</span><br><span class="line">glEnableVertexAttribArray(0);  </span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">[...]</span><br><span class="line"></span><br><span class="line">// ..:: Drawing code (in render loop) :: ..</span><br><span class="line">// 4. draw the object</span><br><span class="line">glUseProgram(shaderProgram);</span><br><span class="line">glBindVertexArray(VAO);</span><br><span class="line">someOpenGLFunctionThatDrawsOurTriangle();</span><br></pre></td></tr></table></figure>
+<p>通过对<code>glVertexAttribPointer</code>参数的调整，就可以达成上图中VAO1和VAO2的效果。<br>需要注意的是，注释2写错了，构建VAO的过程中是不会拷贝VBO的数据的，我特意试过，在画图前，改变对应VBO数据，图案也会变化。而把<code>glBufferData</code>和<code>glVertexAttribPointer</code>调换顺序，图案也能正常画出。这就说明，在调用<code>glVertexAttribPointer</code>时，VAO对象拷贝的应该是当前的VBO对象中用该函数指定数据的指针。</p>
+<h2 id="EBO对象-Element-Buffer-Objects"><a href="#EBO对象-Element-Buffer-Objects" class="headerlink" title="EBO对象-Element Buffer Objects"></a>EBO对象-Element Buffer Objects</h2><p>试想一下，画两个直角三角形，它们在同一个矩形上。如果用上面的方法，要建两个VAO对象，存6个点的数据，无疑浪费了很多内存。这时，就可以采用EBO对象，它相当于一个索引数组，可以自由的按指定的索引顺序绘制图形，如下：<br><img src="https://blog-1255455112.cossh.myqcloud.com/2018-02-16-104026.jpg" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// ..:: Initialization code :: ..</span><br><span class="line">// 1. bind Vertex Array Object</span><br><span class="line">glBindVertexArray(VAO);</span><br><span class="line">// 2. copy our vertices array in a vertex buffer for OpenGL to use</span><br><span class="line">glBindBuffer(GL_ARRAY_BUFFER, VBO);</span><br><span class="line">glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);</span><br><span class="line">// 3. copy our index array in a element buffer for OpenGL to use</span><br><span class="line">glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);</span><br><span class="line">glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);</span><br><span class="line">// 4. then set the vertex attributes pointers</span><br><span class="line">glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);</span><br><span class="line">glEnableVertexAttribArray(0);  </span><br><span class="line"></span><br><span class="line">[...]</span><br><span class="line">  </span><br><span class="line">// ..:: Drawing code (in render loop) :: ..</span><br><span class="line">glUseProgram(shaderProgram);</span><br><span class="line">glBindVertexArray(VAO);</span><br><span class="line">glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0)</span><br><span class="line">glBindVertexArray(0);</span><br></pre></td></tr></table></figure>
+<p>要注意的是，VEO对象相当于VAO对象的成员，在调用<code>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);</code>前，必须已经声明了一个VAO对象，并切换到这个对象上来。在画图时，和之前一样，只用切换VAO对象就好了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/03/2018-02-03/" rel="next" title="opengl学习笔记（1）建立窗口">
+                <i class="fa fa-chevron-left"></i> opengl学习笔记（1）建立窗口
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/18/2018-02-18/" rel="prev" title="《局外人》-加缪 读后感">
+                《局外人》-加缪 读后感 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://lh3.googleusercontent.com/-eydKt8G3tww/WmwuFXp4qII/AAAAAAAAAC4/8cWzfkgl5-oI6-4i4vzHcgtPykEaEv_jQCHMYCw/I/Stan-marsh-0.png"
+               alt="Messier" />
+          <p class="site-author-name" itemprop="name">Messier</p>
+           
+              <p class="site-description motion-element" itemprop="description">101010</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">1.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#坐标系和投影"><span class="nav-number">2.</span> <span class="nav-text">坐标系和投影</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VBO对象-vertex-buffer-objects"><span class="nav-number">3.</span> <span class="nav-text">VBO对象-vertex buffer objects</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#着色器"><span class="nav-number">4.</span> <span class="nav-text">着色器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VAO对象-Vertex-Array-Object"><span class="nav-number">5.</span> <span class="nav-text">VAO对象-Vertex Array Object</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EBO对象-Element-Buffer-Objects"><span class="nav-number">6.</span> <span class="nav-text">EBO对象-Element Buffer Objects</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Messier</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
