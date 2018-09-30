@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="树莓派,OpenCV,Slam," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="代码链接 项目描述：在大三下半学期参加的智能车比赛。比赛任务如下： 分析　　比赛的任务是要制作一辆小车，能在8*8的棋盘格内自由移动，并且搬运棋子，使八颗棋子满足八皇后问题。比赛的任务还是很复杂的，可以分解成车身的定位，棋子的识别，路径的规划，以及车体控制部分。　　车体控制方面，包括控速，转向，棋子的抓取与放置。后面实际做的过程中，采用了麦克纳姆轮小车，用机械臂加电磁铁的方式来实现棋子的抓取与放置">
+<meta name="keywords" content="树莓派,OpenCV,Slam">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树莓派小车">
+<meta property="og:url" content="http://yoursite.com/2018/09/29/2018-09-29/index.html">
+<meta property="og:site_name" content="Messier’s blog">
+<meta property="og:description" content="代码链接 项目描述：在大三下半学期参加的智能车比赛。比赛任务如下： 分析　　比赛的任务是要制作一辆小车，能在8*8的棋盘格内自由移动，并且搬运棋子，使八颗棋子满足八皇后问题。比赛的任务还是很复杂的，可以分解成车身的定位，棋子的识别，路径的规划，以及车体控制部分。　　车体控制方面，包括控速，转向，棋子的抓取与放置。后面实际做的过程中，采用了麦克纳姆轮小车，用机械臂加电磁铁的方式来实现棋子的抓取与放置">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-054154.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-054020.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-054315.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-054349.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-064957.jpg">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-IMG_03.jpg">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-071350.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-073550.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-080150.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-080540.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-082037.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-082349.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-084426.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-30-073358.png">
+<meta property="og:updated_time" content="2018-09-30T08:38:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="树莓派小车">
+<meta name="twitter:description" content="代码链接 项目描述：在大三下半学期参加的智能车比赛。比赛任务如下： 分析　　比赛的任务是要制作一辆小车，能在8*8的棋盘格内自由移动，并且搬运棋子，使八颗棋子满足八皇后问题。比赛的任务还是很复杂的，可以分解成车身的定位，棋子的识别，路径的规划，以及车体控制部分。　　车体控制方面，包括控速，转向，棋子的抓取与放置。后面实际做的过程中，采用了麦克纳姆轮小车，用机械臂加电磁铁的方式来实现棋子的抓取与放置">
+<meta name="twitter:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-054154.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/29/2018-09-29/"/>
+
+
+
+
+
+  <title>树莓派小车 | Messier’s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Messier’s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/29/2018-09-29/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Messier">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://blog-1255455112.cossh.myqcloud.com/2018-02-26-155639.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Messier’s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">树莓派小车</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-29T13:31:02+08:00">
+                2018-09-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://gitee.com/messier201/car2018" target="_blank" rel="noopener">代码链接</a></p>
+<p>项目描述：在大三下半学期参加的智能车比赛。<br>比赛任务如下：<br><img src="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-054154.png" alt=""><br><img src="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-054020.png" alt=""><br><img src="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-054315.png" alt=""><br><img src="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-054349.png" alt=""></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>　　比赛的任务是要制作一辆小车，能在8*8的棋盘格内自由移动，并且搬运棋子，使八颗棋子满足八皇后问题。比赛的任务还是很复杂的，可以分解成车身的定位，棋子的识别，路径的规划，以及车体控制部分。<br>　　车体控制方面，包括控速，转向，棋子的抓取与放置。后面实际做的过程中，采用了麦克纳姆轮小车，用机械臂加电磁铁的方式来实现棋子的抓取与放置。<br>　　本文主要论述除车体控制外的部分。
+　　</p>
+<h2 id="总体框架"><a href="#总体框架" class="headerlink" title="总体框架"></a>总体框架</h2><p>　　算法运行平台：控制算法在官方要求的k60单片机上运行，而定位的算法则放在树莓派上运行。两者之间用串口进行通信，传递位置信息。<br>　　树莓派上搭载一个单目相机相机，用openCV进行图像的读取与处理，用wiringPi进行串口通信，用pthreads线程库实现图像进程和串口进程的并行。操作系统为ubuntu mate，语言为C++，使用cmake构建工程。平时在我的Mac上编写代码，并用离线的视频与图片进行调试，定期用git同步到树莓派上进行实际的测试。</p>
+<h2 id="算法简述"><a href="#算法简述" class="headerlink" title="算法简述"></a>算法简述</h2><h3 id="定位算法"><a href="#定位算法" class="headerlink" title="定位算法"></a>定位算法</h3><p>总体思路如下：<br>　首先明确输入输出。输入是一张图像，输出即是车体在<strong>世界坐标系</strong>下的位置与姿态。<br>　算法的核心是slam的PnP算法。通过输入相机的参数矩阵，平面内4个点的世界参考系与图像坐标，就能得到世界坐标变换到相机坐标的旋转矩阵R，平移向量t。<br>　场地是铺设在地面上，刚好满足PnP的平面的约束。而棋盘格的每个方格中都有一个数字，指定世界参考系后，通过数值可以计算出方格的4个角点的世界坐标。而如果准确识别出了四个角点，则图像坐标也可以得到，PnP的输入就满足了。<br>　所以，可以确定算法流程大体如下:找出方框角点，识别数字，计算世界坐标，填入世界坐标与图像坐标，调用pnp算法，用R和t得出车体姿态和位置。</p>
+<h3 id="路径规划算法"><a href="#路径规划算法" class="headerlink" title="路径规划算法"></a>路径规划算法</h3><p>  整个比赛流程可以简化为：前往棋子方格-&gt;抓取-&gt;前往目标方格-&gt;放置。<br>　八皇后一共有92种放置方法，可以简单的用回溯递归解出并保存。<br>　当前棋子摆放情况已知的情况下，可以判断当前情况到每一种解法，小车所要行驶的最短距离和搬运次数，得出最优解。</p>
+<h2 id="算法详述"><a href="#算法详述" class="headerlink" title="算法详述　　"></a>算法详述　　</h2><h3 id="方框角点提取与数字的识别"><a href="#方框角点提取与数字的识别" class="headerlink" title="方框角点提取与数字的识别"></a>方框角点提取与数字的识别</h3><p>　对于这个问题，我想起了以前看到过的openCV识别数独的教程。在开始时，学校的场地也没有铺设好，所以我先用数独的图片进行算法的测试素材。<br>　<img src="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-064957.jpg" alt=""><br>　看了这篇<a href="https://blog.csdn.net/xingchenbingbuyu/article/details/70169665" target="_blank" rel="noopener">文章</a>，我决定也采用判断轮廓层级的方式来提取方格。<br>　提出方格后，调用caffe的Mnist模型识别数字。整个流程比较顺利的完成了。<br>　场地铺好后，拍摄了图片。<br>　<img src="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-IMG_03.jpg" alt=""><br>可以发现算法有很多地方要补足:<br>1.层级判断的方式不能用了，因为视角有限，不可能像数独一样看到整个棋盘格。<br>2.反光，明暗不均，二值化处理的效果如下。<br>　<img src="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-071350.png" alt=""><br>　以上因素均会影响到数字的识别与方框的提取。<br>3.由于畸变和透视，方框不再是严格的正方形，也可能由于视角的不同，方框是旋转过一定角度的。<br>4.一个格子内会有1-2个数字，不能简单的将方框内的图片提出然后用Mnist判断数值。</p>
+<p>　对于问题1，2，我在用findContours得到轮廓后。首先，用层序遍历把每个结点的孩子结点和深度保存（在这个过程中滤掉一些小轮廓-噪点）。然后进行判断，一个轮廓是否深度小于等于2并且有1或2个孩子结点，若是的话，进一步使用多边形逼近函数对轮廓进行逼近，看能否得到一个四边形，若能得到的话，则将其判断成一个方框，并存下角点的图像坐标以便后续处理。效果如下：<br>　　<img src="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-073550.png" alt=""><br> 对于问题3，4，小车实际行驶时的画面是这样的:<br> <img src="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-080150.png" alt=""><br>　　方框旋转一定角度，是不影响方框的提取的。<br>　　但是，存在两个问题：１.如何裁剪出数字２.多边形逼近得到的角点的保存顺序是未知的，也就是说，无法直接得到４个点对应的是哪个结点。<br>　裁剪数字方面，我先尝试用了下平面Ｈ变换，把蓝色通道图像中的四边形成一个正方形，然后局部二值化处理，效果如下：<br>　　<img src="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-080540.png" alt=""><br>　但是，并不是每次都能得到这样的结果，Ｈ变换的结果可能是转过180°或90°的，因为角点顺序未知，如下:<br>　<img src="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-082037.png" alt=""><br>　对于这个问题，我的思考如下:可以确定的是，4个点是连续存放的。<br>　以这张图的数字36举例:<br>　<img src="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-082349.png" alt=""><br>　进行编号(对应数组下标)，绿色点是0，红色1，黑色2，蓝色3。而进行H变换时，同样有4个映射点。比如映射成一个56*56的正方形时:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">static int length = 56; </span><br><span class="line">Point rightPts[4] = &#123;Point(0, 0), Point(length - 1, 0), Point(length - 1, length - 1), Point(0, length - 1)&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>　　要得到正确的映射图像，也就是要找到正确的点的对应关系。一共有4种可能性。</p>
+<p>　　假定映射点的顺序是：左上-&gt;右上-&gt;右下-&gt;左下。那么在进行H变换时，先对输入的原图点的坐标顺序重新排列，由0，1，2，3变为3，0，1，2，就可以得到正确的映射图像。<br>　　所以，每次我都进行4次H变换，然后对每一张映射图像单独判断正确性。<br>　　判断正确性是在识别数字的同时进行的。得到正方形图片后，提取轮廓的最小外接矩形(可以注意到，每个数字的外接矩形应该是宽度&lt;高度的)，然后生成一副新的单独只有一个数字的图片，如下:<br>　　<img src="https://blog-1255455112.cossh.myqcloud.com/2018-09-29-084426.png" alt=""><br>　此时，就可以调用Mnist判断了。判断后将十位*10与个位相加，进而得出结果。
+　
+　</p>
+<h3 id="PnP算法"><a href="#PnP算法" class="headerlink" title="PnP算法"></a>PnP算法</h3><p>在之前的过程中已经能得到数字周围四个角点的世界坐标与像素坐标，接下来就是调用solvePnP函数了。</p>
+<blockquote>
+<p>bool cv::solvePnP    (    InputArray     objectPoints,<br>InputArray     imagePoints,<br>InputArray     cameraMatrix,<br>InputArray     distCoeffs,<br>OutputArray     rvec,<br>OutputArray     tvec,<br>bool     useExtrinsicGuess = false,<br>int     flags = SOLVEPNP_ITERATIVE<br>)        </p>
+</blockquote>
+<p>假定世界坐标原点为数字1的左上角点，x轴为1-9方向，y轴为1-8方向，z轴竖直向上。<br>要得到车身的位置和姿态，要对得到的旋转向量和平移向量作处理。</p>
+<p>先将旋转向量转换为旋转矩阵。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Mat rot;</span><br><span class="line">Rodrigues(rVec, rot);</span><br></pre></td></tr></table></figure>
+<p>$$<br> \left[<br> \begin{matrix}<br>   X \<br>   Y \<br>   Z<br>  \end{matrix}<br>  \right] =R\left[<br> \begin{matrix}<br>   U \<br>   V \<br>   W<br>  \end{matrix}<br>  \right] +t<br>$$　<br>　在这里，$<br> \left[<br> \begin{matrix}<br>   X \<br>   Y \<br>   Z<br>  \end{matrix}<br>  \right]$是相机坐标，$\left[<br> \begin{matrix}<br>   U \<br>   V \<br>   W<br>  \end{matrix}<br>  \right]$是世界坐标。<br>  先求位置，求出的t向量是世界坐标原点在相机坐标下的方位，我们要求的是相机在世界坐标中的位置，很简单,如下计算即可：<br>  $t’=R^Tt$<br>  再求姿态，我们只需要小车在xOy平面上的角度即可。这里要用到一些线性代数的知识，上面的旋转矩阵R是世界参考系到相机参考系的变换矩阵，根据<strong>基变换</strong>的原理，R的第三列即为变换后的世界坐标的z轴，也即是相机的光轴在世界参考系下的单位方向向量。<br>那么，想求得角度，只要将该向量投影在xOy平面上，求与x轴夹角即可。<br>代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Mat rVec, tVec;</span><br><span class="line">    solvePnP(obj, dig.imgPos, cameraMatrix, distCoeffs, rVec, tVec, false, SOLVEPNP_P3P);</span><br><span class="line"></span><br><span class="line">    Mat rot;</span><br><span class="line">    Rodrigues(rVec, rot);</span><br><span class="line">    Mat tVec2 = rot.t()*(-1*tVec);</span><br><span class="line">   // column vector !</span><br><span class="line">    double Zx, Zy;</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">    Zx = rot.at&lt;double&gt;(2, 0);</span><br><span class="line">    Zy = rot.at&lt;double&gt;(2, 1);</span><br><span class="line">   degree = atan2(Zy, Zx)/3.14159*180;</span><br><span class="line">  carPos_x = int(tVec2.at&lt;double&gt;(0, 0));</span><br><span class="line">   carPos_y = int(tVec2.at&lt;double&gt;(1, 0));</span><br></pre></td></tr></table></figure></p>
+<h3 id="结果显示"><a href="#结果显示" class="headerlink" title="结果显示"></a>结果显示</h3><p>为了方便调试，写了个简单的画图函数将当前位置和姿态显示出来。<br> <img src="https://blog-1255455112.cossh.myqcloud.com/2018-09-30-073358.png" alt=""></p>
+<h3 id="路径规划算法-1"><a href="#路径规划算法-1" class="headerlink" title="路径规划算法"></a>路径规划算法</h3><p>问题如下：当前已知8个棋子的位置，给定一种解法，求移动到这种解法所需的最短距离。<br>可以先找出所有需要移动的棋子，举例说有4个，那么要移动4*2次，到达8个点，4个拿起的点，4个放下的点。那么这可以理解成一个旅行商问题，求遍历所有点的最短路径和距离。因为每次总是先拿起，再放下，再拿起，如此循环。在建图时，4个拿起点之间，4个放下点之间都是不连通的，而任意一个拿起与任意一个放下点之间都是连通的。<br>如此，就可以成功地建图然后解出最短路径了。</p>
+<h2 id="总结-amp-感谢"><a href="#总结-amp-感谢" class="headerlink" title="总结&amp;感谢"></a>总结&amp;感谢</h2><p>　　感谢我的指导老师陈东晓老师和杨力老师，感谢队友们。从大一刚接触单片机学习编程，到大三学习计算机视觉做了这个比赛，这一路经历了很多，在实验室的这三年也学到了很多东西，收获了珍贵的友情。虽然这次比赛的结果不尽如人意，我也因此备受打击。anyway，心态也还是调整过来了。在大一时，曾看到过一个四旋翼的视频，里面演示的精妙的控制算法令我心驰神往，想着自己有一天也能做出这样厉害的东西就好了。<br>　　如今，也不再是当时那个只能仰望着的我了，有幸学习接触到了很多新的知识，也认识到了这个世界的广阔。<br>　　不会止步于此的，因为还想探寻更广阔的世界！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/树莓派/" rel="tag"># 树莓派</a>
+          
+            <a href="/tags/OpenCV/" rel="tag"># OpenCV</a>
+          
+            <a href="/tags/Slam/" rel="tag"># Slam</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/06/2018-03-06/" rel="next" title="opengl学习笔记（4）Textures纹理">
+                <i class="fa fa-chevron-left"></i> opengl学习笔记（4）Textures纹理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://blog-1255455112.cossh.myqcloud.com/2018-02-26-155639.jpg"
+               alt="Messier" />
+          <p class="site-author-name" itemprop="name">Messier</p>
+           
+              <p class="site-description motion-element" itemprop="description">101010</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">1.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总体框架"><span class="nav-number">2.</span> <span class="nav-text">总体框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法简述"><span class="nav-number">3.</span> <span class="nav-text">算法简述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定位算法"><span class="nav-number">3.1.</span> <span class="nav-text">定位算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路径规划算法"><span class="nav-number">3.2.</span> <span class="nav-text">路径规划算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法详述"><span class="nav-number">4.</span> <span class="nav-text">算法详述　　</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方框角点提取与数字的识别"><span class="nav-number">4.1.</span> <span class="nav-text">方框角点提取与数字的识别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PnP算法"><span class="nav-number">4.2.</span> <span class="nav-text">PnP算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结果显示"><span class="nav-number">4.3.</span> <span class="nav-text">结果显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路径规划算法-1"><span class="nav-number">4.4.</span> <span class="nav-text">路径规划算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结-amp-感谢"><span class="nav-number">5.</span> <span class="nav-text">总结&amp;感谢</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Messier</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

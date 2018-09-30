@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="GLSL常见形式如下，可以建立输入、输出、全局变量。123456789101112131415#version version_numberin type in_variable_name;in type in_variable_name;out type out_variable_name;  uniform type uniform_name;  void main()&amp;#123;  // p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="opengl学习笔记（3）Shader着色器">
+<meta property="og:url" content="http://yoursite.com/2018/03/05/2018-03-05/index.html">
+<meta property="og:site_name" content="Messier’s blog">
+<meta property="og:description" content="GLSL常见形式如下，可以建立输入、输出、全局变量。123456789101112131415#version version_numberin type in_variable_name;in type in_variable_name;out type out_variable_name;  uniform type uniform_name;  void main()&amp;#123;  // p">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-03-06-043955.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-03-06-044513.png">
+<meta property="og:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-03-06-044810.jpg">
+<meta property="og:updated_time" content="2018-03-06T04:48:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="opengl学习笔记（3）Shader着色器">
+<meta name="twitter:description" content="GLSL常见形式如下，可以建立输入、输出、全局变量。123456789101112131415#version version_numberin type in_variable_name;in type in_variable_name;out type out_variable_name;  uniform type uniform_name;  void main()&amp;#123;  // p">
+<meta name="twitter:image" content="https://blog-1255455112.cossh.myqcloud.com/2018-03-06-043955.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/05/2018-03-05/"/>
+
+
+
+
+
+  <title>opengl学习笔记（3）Shader着色器 | Messier’s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Messier’s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/05/2018-03-05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Messier">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://blog-1255455112.cossh.myqcloud.com/2018-02-26-155639.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Messier’s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">opengl学习笔记（3）Shader着色器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-05T11:04:31+08:00">
+                2018-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程/opengl/" itemprop="url" rel="index">
+                    <span itemprop="name">opengl</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="GLSL"><a href="#GLSL" class="headerlink" title="GLSL"></a>GLSL</h2><p>常见形式如下，可以建立输入、输出、全局变量。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#version version_number</span><br><span class="line">in type in_variable_name;</span><br><span class="line">in type in_variable_name;</span><br><span class="line"></span><br><span class="line">out type out_variable_name;</span><br><span class="line">  </span><br><span class="line">uniform type uniform_name;</span><br><span class="line">  </span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">  // process input(s) and do some weird graphics stuff</span><br><span class="line">  ...</span><br><span class="line">  // output processed stuff to output variable</span><br><span class="line">  out_variable_name = weird_stuff_we_processed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Types"><a href="#Types" class="headerlink" title="Types"></a>Types</h2><h3 id="Vectors"><a href="#Vectors" class="headerlink" title="Vectors"></a>Vectors</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">n=1,2,3,4</span><br><span class="line">vecn: the default vector of n floats.</span><br><span class="line">bvecn: a vector of n booleans.</span><br><span class="line">ivecn: a vector of n integers.</span><br><span class="line">uvecn: a vector of n unsigned integers.</span><br><span class="line">dvecn: a vector of n double components.</span><br></pre></td></tr></table></figure>
+<p>可以用 .x, .y, .z, .w 单独访问各轴坐标（也可以用rgba访问颜色，用stpq访问纹理）</p>
+<p>支持特性 swizzling，可以自由组合要访问的坐标</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vec2 someVec;</span><br><span class="line">vec4 differentVec = someVec.xyxx;</span><br><span class="line">vec3 anotherVec = differentVec.zyw;</span><br><span class="line">vec4 otherVec = someVec.xxxx + anotherVec.yxzy;</span><br></pre></td></tr></table></figure>
+<p>可以用低维向量创建高维向量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vec2 vect = vec2(0.5, 0.7);</span><br><span class="line">vec4 result = vec4(vect, 0.0, 0.0);</span><br><span class="line">vec4 otherResult = vec4(result.xyz, 1.0);</span><br></pre></td></tr></table></figure>
+<h3 id="Ins-and-outs"><a href="#Ins-and-outs" class="headerlink" title="Ins and outs"></a>Ins and outs</h3><p>Vertex shader需要改变<code>gl_Postion</code>变量来设定顶点位置，<br><del>Fragment shader需要改变<code>FragColor</code>变量来设定颜色。</del><br><code>gl_Postion</code>是GLSL的内置变量之一，<code>FragColor</code>不是，最后渲染的颜色是Fragment shader中out类型的变量</p>
+<p>一般来说，会让Vertex shader接收程序的输入，计算位置，并产生输出传递给Fragment shader，计算颜色：</p>
+<p>Vertex shader</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#version 330 core</span><br><span class="line">layout (location = 0) in vec3 aPos; // the position variable has attribute position 0</span><br><span class="line">  </span><br><span class="line">out vec4 vertexColor; // specify a color output to the fragment shader</span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    gl_Position = vec4(aPos, 1.0); // see how we directly give a vec3 to vec4&apos;s constructor</span><br><span class="line">    vertexColor = vec4(0.5, 0.0, 0.0, 1.0); // set the output variable to a dark-red color</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>“layout(location = 0)“指向存储aPos属性（attribute）的缓冲。每个顶点有多种属性：位置，一种或多种颜色，一个或多个纹理坐标等等。OpenGL并不清楚什么是颜色，它只能识别vec3这样的数据类型。因此我们必须将glvertexAttribPointer函数的第一个参数值赋给layout，以此告知OpenGL每个缓冲对应的是哪种属性数据。第二个参数“0”并不重要，也可以换成12（但是不能超过glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &amp;v)），关键是C++和GLSL两边数值必须保持一致。</li>
+<li>“aPos”这个变量名可以任取，其中保存的是顶点位置，顶点着色器每次运行时都会用到。</li>
+</ul>
+<p>Fragment shader</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#version 330 core</span><br><span class="line">out vec4 FragColor;</span><br><span class="line">  </span><br><span class="line">in vec4 vertexColor; // the input variable from the vertex shader (same name and same type)  </span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    FragColor = vertexColor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Uniforms"><a href="#Uniforms" class="headerlink" title="Uniforms"></a>Uniforms</h3><p>Uniforms 是另一种从CPU传值到GPU的方式，相当于一个全局变量。<br>uniform变量可以在CPU程序中被设定（好像不能被查询？），如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int vertexColorLocation = glGetUniformLocation(shaderProgram, &quot;ourColor&quot;);</span><br><span class="line">glUseProgram(shaderProgram);</span><br><span class="line">glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);</span><br></pre></td></tr></table></figure>
+<p>分为三步：取得变量地址-&gt;切换到所在程序-&gt;设定变量。</p>
+<h2 id="其它特性"><a href="#其它特性" class="headerlink" title="其它特性"></a>其它特性</h2><p>可以把想要的颜色和顶点位置放在一个VAO对象里，如下：<br><img src="https://blog-1255455112.cossh.myqcloud.com/2018-03-06-043955.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">float vertices[] = &#123;</span><br><span class="line">    // positions         // colors</span><br><span class="line">     0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right</span><br><span class="line">    -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left</span><br><span class="line">     0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top </span><br><span class="line">&#125;;    </span><br><span class="line">// position attribute</span><br><span class="line">glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);</span><br><span class="line">glEnableVertexAttribArray(0);</span><br><span class="line">// color attribute</span><br><span class="line">glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));</span><br><span class="line">glEnableVertexAttribArray(1);</span><br></pre></td></tr></table></figure>
+<p>再来回顾下<code>glVertexAttribPointer</code>函数：</p>
+<p><img src="https://blog-1255455112.cossh.myqcloud.com/2018-03-06-044513.png" alt=""></p>
+<p>通过改变第一个index参数，就可以把位置和颜色分别传给GLSL<br>在Vertex shader 中，改变location参数就可以读取了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#version 330 core</span><br><span class="line">layout (location = 0) in vec3 aPos;   // the position variable has attribute position 0</span><br><span class="line">layout (location = 1) in vec3 aColor; // the color variable has attribute position 1</span><br><span class="line">  </span><br><span class="line">out vec3 ourColor; // output a color to the fragment shader</span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    gl_Position = vec4(aPos, 1.0);</span><br><span class="line">    ourColor = aColor; // set ourColor to the input color we got from the vertex data</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后图像效果如下：<br><img src="https://blog-1255455112.cossh.myqcloud.com/2018-03-06-044810.jpg" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/18/2018-02-18/" rel="next" title="《局外人》-加缪 读后感">
+                <i class="fa fa-chevron-left"></i> 《局外人》-加缪 读后感
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/06/2018-03-06/" rel="prev" title="opengl学习笔记（4）Textures纹理">
+                opengl学习笔记（4）Textures纹理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://blog-1255455112.cossh.myqcloud.com/2018-02-26-155639.jpg"
+               alt="Messier" />
+          <p class="site-author-name" itemprop="name">Messier</p>
+           
+              <p class="site-description motion-element" itemprop="description">101010</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#GLSL"><span class="nav-number">1.</span> <span class="nav-text">GLSL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Types"><span class="nav-number">2.</span> <span class="nav-text">Types</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Vectors"><span class="nav-number">2.1.</span> <span class="nav-text">Vectors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ins-and-outs"><span class="nav-number">2.2.</span> <span class="nav-text">Ins and outs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Uniforms"><span class="nav-number">2.3.</span> <span class="nav-text">Uniforms</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它特性"><span class="nav-number">3.</span> <span class="nav-text">其它特性</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Messier</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
